@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:nasa/Screens/ResultScreen.dart';
 
 class RootScreen extends StatefulWidget {
   @override
@@ -49,7 +50,9 @@ class _RootScreenState extends State<RootScreen> {
                 height: 30,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(_createRoute());
+                },
                 child: Text(
                   "See today's Picture",
                   style: TextStyle(
@@ -252,4 +255,22 @@ class _RootScreenState extends State<RootScreen> {
 
 
   ];
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => ResultScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
 }
